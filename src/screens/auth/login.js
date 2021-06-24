@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { toastError } from "../../components/toast-helpers";
-import { authenticateInitiate } from "../../store/actions/session.action";
+import { authenticateInitiate, triggerOtp } from "../../store/actions/session.action";
 import { getString, requiredCheck } from "../../utils/validations";
 import AppContainer from "../../components/app-container";
 import Input from "../../components/form-helpers/input";
 import FormBase from "../../components/form-helpers/base";
+import VerificationView from "../../components/verification";
 
 const fields = [
   {
@@ -28,11 +29,13 @@ const fields = [
 ];
 
 const Login = (props) => {
-  const { triggerLogin, history, session } = props;
+  const { triggerLogin, history, session, triggerVerificationCode } = props;
   const state = useMemo(() => ({ phone: "" }), []);
 
   const [isLoading, toggleLoading] = useState(false);
   const [credentialError, setCredentialError] = useState(null);
+  const [showVerificationView, toggleVerificationView] = useState(false);
+  const [phone, setPhone] = useState("");
 
   const handleLogin = (values, actions) => {
     setCredentialError("");
@@ -44,12 +47,47 @@ const Login = (props) => {
 
     const onFailed = (error) => {
       if (error.response && (error.response.status === 400 || error.response.status === 401)) {
-        setCredentialError(() => "Either username or password is incorrect");
+        setCredentialError(() => "Invalid code");
       } else {
         setCredentialError(() => error.message);
         toastError(error);
       }
       actions.setSubmitting(false);
+      toggleLoading(false);
+    };
+
+    const { otp } = values;
+    const payload = {
+      phone: getString(phone),
+      otp: otp
+    };
+
+    toggleLoading(true);
+    triggerLogin(payload, { onSuccess, onFailed });
+  };
+
+  const getVerificationCode = (values, actions) => {
+    setCredentialError("");
+
+    const onSuccess = () => {
+      toggleLoading(false);
+      if (actions.setSubmitting) {
+        actions.setSubmitting(false);
+      }
+      setPhone(values.phone);
+      toggleVerificationView(true);
+    };
+
+    const onFailed = (error) => {
+      if (error.response && (error.response.status === 400 || error.response.status === 401)) {
+        setCredentialError(() => "Either username or password is incorrect");
+      } else {
+        setCredentialError(() => error.message);
+        toastError(error);
+      }
+      if (actions.setSubmitting) {
+        actions.setSubmitting(false);
+      }
       toggleLoading(false);
     };
 
@@ -59,11 +97,7 @@ const Login = (props) => {
     };
 
     toggleLoading(true);
-    triggerLogin(payload, { onSuccess, onFailed });
-  };
-
-  const redirect = (path) => {
-    history.push(path);
+    triggerVerificationCode(payload, { onSuccess, onFailed });
   };
 
   useEffect(() => {
@@ -72,6 +106,19 @@ const Login = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session.isAuthenticated]);
+
+  if (showVerificationView) {
+    return (
+      <VerificationView
+        handleLogin={handleLogin}
+        isLoading={isLoading}
+        phone={phone}
+        credentialError={credentialError}
+        toggleVerificationView={toggleVerificationView}
+        getVerificationCode={getVerificationCode}
+      />
+    );
+  }
 
   return (
     <AppContainer>
@@ -95,21 +142,11 @@ const Login = (props) => {
                 <span className="text-size-small text-color-red">{credentialError}</span>
                 <FormBase
                   fields={fields}
-                  postRequest={handleLogin}
+                  postRequest={getVerificationCode}
                   initialValues={state}
                   submitButtonLabel={"Get OTP"}
                   submitButtonClassNames={"ui primary button text-weight-normal button-login"}
                 />
-              </div>
-            </div>
-            <div className="row">
-              <div className="twelve wide column text-center">
-                Didn't received OTP?{" "}
-                <span
-                  className="text-color-primary text-weight-bold cursor-pointer"
-                  onClick={() => !isLoading && redirect("/signup")}>
-                  Resend
-                </span>
               </div>
             </div>
           </div>
@@ -129,7 +166,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     triggerLogin: (payload, actions = {}) => {
       dispatch(authenticateInitiate({ payload, actions }));
-    }
+    },
+    triggerVerificationCode: (payload, actions) => dispatch(triggerOtp({ payload, actions }))
   };
 };
 

@@ -23,12 +23,18 @@ export function unAuthenticateInitiate() {
   };
 }
 
-export function authenticateInitiate(payload) {
-  const { email, password } = payload;
-
+export function authenticateInitiate({ payload, actions }) {
   return {
     type: sessionActionTypes.AUTHENTICATION_REQUEST_INITIATED,
-    email,
-    password
+    payload,
+    actions
+  };
+}
+
+export function triggerOtp({ payload, actions }) {
+  return {
+    type: sessionActionTypes.AUTHENTICATION_OTP_REQUEST,
+    payload,
+    actions
   };
 }

@@ -59,7 +59,6 @@ const Input = memo(({ field, ...props }) => {
           type={visible ? "text" : type}
           onChange={handleChange}
           onBlur={handleBlur}
-          min="1"
           value={value}
           name={valuePath}
           placeholder={placeholder}

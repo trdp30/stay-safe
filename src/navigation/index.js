@@ -2,7 +2,7 @@ import Dashboard from "../screens/dashboard";
 import LoginScreen from "../screens/auth/login";
 import { connect } from "react-redux";
 import React, { Suspense } from "react";
-// import Navbar from "../components/Navbar/navbar";
+import Navbar from "../components/nav-bar";
 import { Switch, Route, Redirect } from "react-router-dom";
 import ErrorBoundary from "./error-boundary";
 import LoadingContainer from "./loading-container";
@@ -20,7 +20,7 @@ export const publicRoutes = [
     key: "login",
     path: "/login",
     component: LoginScreen
-  },
+  }
 ];
 
 export const privateRoutes = [
@@ -49,7 +49,7 @@ const PrivateRoute = ({ component: Component, isAuthenticated, currentUserRole, 
           />
         ) : (
           <>
-            {/* <Navbar /> */}
+            <Navbar />
             <div className="ui container">
               <Component {...props} />
             </div>
