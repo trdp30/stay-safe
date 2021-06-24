@@ -4,28 +4,29 @@ import { createRecord } from "../server";
 
 function* workerAuthenticate({ email, password }) {
   try {
-    const response = yield call(
-      createRecord,
-      "token",
-      { email, password },
-      {
-        baseURL: "https://findoutv1.herokuapp.com/admin/v1/"
-      }
-    );
-    if (response.data.token) {
-      yield put({ type: types.AUTHENTICATION_SUCCESS, payload: response.data });
-      let tokenData = {
-        expiresIn: response.data.expiresIn,
-        refreshToken: response.data.refresh_token,
-        token: response.data.token
-      };
-      localStorage.setItem("stay-safe-session", JSON.stringify(tokenData));
-    } else {
-      let error = "User not found";
-      yield put({ type: types.AUTHENTICATION_REQUEST_FAILED, error: error });
-      alert(error);
-    }
+    // const response = yield call(
+    //   createRecord,
+    //   "token",
+    //   { email, password },
+    //   {
+    //     baseURL: "https://findoutv1.herokuapp.com/admin/v1/"
+    //   }
+    // );
+    // if (response.data.token) {
+      yield put({ type: types.AUTHENTICATION_SUCCESS, payload: {} });
+      // let tokenData = {
+      //   expiresIn: response.data.expiresIn,
+      //   refreshToken: response.data.refresh_token,
+      //   token: response.data.token
+      // };
+      // localStorage.setItem("stay-safe-session", JSON.stringify(tokenData));
+    // } else {
+    //   let error = "User not found";
+    //   yield put({ type: types.AUTHENTICATION_REQUEST_FAILED, error: error });
+    //   alert(error);
+    // }
   } catch (error) {
+    debugger
     yield put({ type: types.AUTHENTICATION_REQUEST_FAILED, error });
   }
 }
