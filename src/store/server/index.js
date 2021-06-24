@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-async function getRecord(url, config) {
+export async function getRecord(url, config) {
   return await axiosInstance.get(url, config);
 }
 

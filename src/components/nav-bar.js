@@ -8,9 +8,7 @@ function NavBar(props) {
     <div className="nav-bar-container">
       <div className="ui inverted menu nav-bar border-radius-none">
         <div className="ui item logo">
-          <div className="ui tiny image">
-            <img src="https://bhyve.io/wp-content/uploads/2019/04/logo-b.png" alt="logo" />
-          </div>
+          <div className="ui tiny image logo-text">StaySafe</div>
         </div>
         <div className="right menu">
           <div className="ui item " onClick={logout}>

@@ -7,6 +7,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import ErrorBoundary from "./error-boundary";
 import LoadingContainer from "./loading-container";
 import Register from "../screens/registration";
+import ApplicationContext from "../contexts/auth-context";
 
 export const preload = (route) => {
   const loadableComponent = route.component;
@@ -50,9 +51,11 @@ const PrivateRoute = ({ component: Component, isAuthenticated, currentUserRole, 
         ) : (
           <>
             <Navbar />
-            <div className="ui container">
-              <Component {...props} />
-            </div>
+            <ApplicationContext>
+              <div className="ui container">
+                <Component {...props} />
+              </div>
+            </ApplicationContext>
           </>
         )
       }

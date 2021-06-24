@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import AppContainer from "../components/app-container";
+import { AuthContext } from "../contexts/auth-context";
 
 function Dashboard() {
+  const { user } = useContext(AuthContext);
+  const phoneNumber = useMemo(() => {
+    if (!user.isLoading && user.data && user.data.phone) {
+      return user.data.phone;
+    }
+    return "";
+  }, [user]);
+
   return (
     <AppContainer>
       <div className="centered fourteen wide column">
@@ -10,7 +19,9 @@ function Dashboard() {
             <div className="row">
               <div className="twelve wide column">
                 <h2>Account Details</h2>
-                <h4>Registered Mobile Number: XXX-XXX-5724</h4>
+                <h4>
+                  Registered Mobile Number: XXXX-XXXX-XXXX-{phoneNumber && phoneNumber.slice(6, 10)}
+                </h4>
               </div>
             </div>
             <div className="row">
