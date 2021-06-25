@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import AddMemberModal from "../components/add-member-modal";
 import AppContainer from "../components/app-container";
+import MemberDetailsCard from "../components/member-details-card";
 import { AuthContext } from "../contexts/auth-context";
 import { createMember, findAllMember } from "../store/actions/member.action";
 import { getListData } from "../store/selectors/data.selector";
@@ -19,6 +20,10 @@ function Dashboard(props) {
     return "";
   }, [user]);
 
+  const shouldAddMemberButton = useMemo(() => {
+    return !isMemberLoading && members && members.length && members.length <= 4;
+  });
+
   useEffect(() => {
     if (user && user.data && user.data.id) {
       toggleMemberLoading(true);
@@ -32,38 +37,38 @@ function Dashboard(props) {
   return (
     <AppContainer>
       <div className="centered fourteen wide column">
-        <div className="ui segment login-wrapper">
+        <div className="ui segment dashboard-container">
           <div className="ui centered stackable grid margin-no height-full">
             <div className="row">
               <div className="twelve wide column">
                 <h2>Account Details</h2>
                 <h4>
                   Registered Mobile Number:
-                  <div>XXXX-XXXX-XXXX-{phoneNumber && phoneNumber.slice(6, 10)}</div>
+                  <div>XXXXX-X{phoneNumber && phoneNumber.slice(6, 10)}</div>
                 </h4>
               </div>
             </div>
             <div className="row">
               <div className="twelve wide column">
-                <div className="ui segments">
-                  <div className="ui segment text-center">
-                    {!isMemberLoading && members && members.length ? (
-                      <div>
-                        {members.map((member) => (
-                          <div key={member.id}>{member.id}</div>
-                        ))}
-                      </div>
-                    ) : (
-                      <h4>No Member Registered</h4>
-                    )}
-                  </div>
+                <div className="ui segment text-center">
+                  {!isMemberLoading && members && members.length ? (
+                    <div>
+                      {members.map((member) => (
+                        <MemberDetailsCard key={member.id} {...member} />
+                      ))}
+                    </div>
+                  ) : (
+                    <h4>No Member Registered</h4>
+                  )}
+                </div>
+                {shouldAddMemberButton && (
                   <div className="ui segment text-center">
                     <div className="ui positive button" onClick={() => toggleAddMemberModal(true)}>
                       Add Member
                     </div>
-                    <p>You can add member upto 4 members</p>
+                    <p className="margin-top-ten">You can add member upto 4 members</p>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

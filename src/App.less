@@ -34,7 +34,7 @@
       color: red;
     }
     &-primary {
-      color: #2185d0;
+      color: #21ba45;
     }
     &-white {
       color: white !important;
@@ -107,6 +107,10 @@ body {
     }
   }
   &-vertical {
+    &-vs {
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;
+    }
     &-large {
       padding-top: 40px !important;
       padding-bottom: 40px !important;
@@ -118,50 +122,19 @@ body {
   cursor: pointer;
 }
 
-.skill {
-  &-wrapper {
-    height: 300px;
-    overflow-y: auto;
-    border-bottom: none;
-  }
-  &-container {
-    .header {
-      font-size: 26px;
-      font-weight: 600;
-      font-family: sans-serif;
-    }
-    .description {
-      font-size: 20px;
-      font-weight: 600;
-      font-family: sans-serif;
-    }
-    .info {
-      font-size: 14px;
-      font-family: sans-serif;
-    }
-  }
-  &-card {
-    border-radius: 40px !important;
-    &:hover {
-      background-color: lighten(#2185d0, 50%) !important;
-      box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 darken(#2185d0, 10%) inset;
-    }
-
-    &:active {
-      background-color: lighten(#58aae9, 30%) !important;
-      box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 darken(#58aae9, 20%) inset;
-    }
-    &.selected {
-      background-color: lighten(#39cc87, 30%) !important;
-      box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 darken(#39cc87, 20%) inset;
-      font-weight: 600;
-    }
-  }
-}
-
 .margin {
   &-no {
     margin: 0 !important;
+  }
+  &-right {
+    &-ten {
+      margin-right: 10px;
+    }
+  }
+  &-top {
+    &-ten {
+      margin-top: 10px;
+    }
   }
 }
 
@@ -173,12 +146,6 @@ body {
   clear: both;
 }
 
-.profile-picture {
-  &-container {
-    background-color: #13ed4726;
-  }
-}
-
 .width {
   &-full {
     width: 100% !important;
@@ -188,68 +155,6 @@ body {
 .height {
   &-full {
     height: 100%;
-  }
-}
-
-.user-details {
-  &-container {
-    height: ~"calc(100vh - 49.09px)";
-    background: #b4bef5;
-  }
-  &-edit {
-    height: calc(100vh - 349.09px);
-    min-height: 320px;
-    .header {
-      font-size: 42px;
-      font-weight: 600;
-      color: #2555c4;
-      font-family: cursive;
-      margin-bottom: 20px;
-    }
-    .description {
-      font-size: 20px;
-      font-weight: 600;
-      color: rgb(52, 52, 52);
-      font-family: system-ui;
-    }
-    label {
-      display: none !important;
-    }
-    .ui.input input {
-      border: none !important;
-      border-bottom: 1px solid rgb(186, 184, 184) !important;
-      border-radius: 0 !important;
-    }
-    .button {
-      width: 150px;
-    }
-  }
-  &-wrapper {
-    height: calc(100% - 300px);
-    margin-top: 15px;
-    margin-bottom: 15px;
-    .label {
-      font-weight: 600;
-      font-size: 16px;
-      color: rgb(136, 135, 135);
-      margin-bottom: 10px !important;
-    }
-    .data {
-      font-weight: 600;
-      font-size: 20px;
-      color: rgb(10, 10, 10);
-      .skill-count {
-        background: #58aae9;
-        padding: 3px 20px;
-        border-radius: 20px;
-        color: white;
-      }
-    }
-    .user-skill-card {
-      border-radius: 30px !important;
-      font-weight: 600;
-      border: none !important;
-    }
   }
 }
 
@@ -312,4 +217,15 @@ body {
 
 .react-datepicker-wrapper {
   width: 100%;
+}
+
+.dashboard {
+  &-container {
+    min-height: ~"calc(100vh - 319.09px)";
+  }
+}
+
+.ui.stackable.grid > .row > .column .padding-vertical-vs {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }

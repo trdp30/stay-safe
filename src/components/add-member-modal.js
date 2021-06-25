@@ -139,10 +139,8 @@ function AddMemberModal(props) {
       showPositive={true}
       hideActions={true}
       showCloseButton={false}
-      // closeOnEscape={!isCreating}
-      // closeOnDimmerClick={!isCreating}
-      // disabledCloseButton={isCreating}
-    >
+      closeOnEscape={false}
+      closeOnDimmerClick={false}>
       <div className="ui centered grid margin-no">
         <div className="fourteen wide column">
           <FormBase
