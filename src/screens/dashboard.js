@@ -91,7 +91,7 @@ function Dashboard(props) {
                   <div>XXXXX-X{phoneNumber ? phoneNumber.slice(6, 10) : "----"}</div>
                 </h4>
               </div>
-              {shouldAddMemberButton ? (
+              {members.length && shouldAddMemberButton ? (
                 <div className="six wide column text-right">
                   <div className="ui positive button" onClick={() => toggleAddMemberModal(true)}>
                     Add Member
@@ -107,7 +107,7 @@ function Dashboard(props) {
                   {!isMemberLoading && members && members.length ? (
                     <>
                       {shouldAddMemberButton ? (
-                        <p className="margin-top-ten">You can add member upto 4</p>
+                        <p className="margin-top-ten">You can add upto 4 members in an account.</p>
                       ) : (
                         <></>
                       )}
@@ -121,7 +121,18 @@ function Dashboard(props) {
                       ))}
                     </>
                   ) : (
-                    <h4>No Member Registered</h4>
+                    <>
+                      <h4>No Member Registered</h4>
+                      <p>Please add members for booking vaccination slots.</p>
+                      <p className="margin-top-ten">You can add upto 4 members in an account.</p>
+                      <div className="six wide column text-center">
+                        <div
+                          className="ui positive button"
+                          onClick={() => toggleAddMemberModal(true)}>
+                          Add Member
+                        </div>
+                      </div>
+                    </>
                   )}
                 </div>
                 {selectedMembers.length ? (
