@@ -67,10 +67,11 @@ function* workerFindByIdMember({ member_id, actions }) {
 function* workerBookAppointment({ payload, actions }) {
   try {
     const response = yield call(createRecord, "book-vaccine", { data: payload });
-    // const normalizedData = yield call(normalizeData, {
-    //   data: response.data,
-    //   schema: memberSchema
-    // });
+    const normalizedData = yield call(normalizeData, {
+      data: response.data,
+      schema: memberArraySchema
+    });
+    yield put(storeMember(normalizedData));
     if (actions.onSuccess) {
       yield call(actions.onSuccess);
     }

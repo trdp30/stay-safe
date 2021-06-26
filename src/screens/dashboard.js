@@ -61,6 +61,7 @@ function Dashboard(props) {
         onSuccess: () => {
           toggleBooking(false);
           toggleConfirmModal(false);
+          updateSelectedMember([]);
         },
         onFailed: () => toggleBooking(false)
       });
