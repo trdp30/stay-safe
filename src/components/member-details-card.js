@@ -1,9 +1,11 @@
 import clsx from "clsx";
 import moment from "moment";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
+import SelectDoseModal from "./select-dose-modal";
 
 function MemberDetailsCard(props) {
   const { data, onMemberSelect, selectedMembers } = props;
+  const [openSelectDoseModal, toggleSelectDoseModal] = useState(false);
   const {
     dob,
     dose_1,
@@ -17,6 +19,14 @@ function MemberDetailsCard(props) {
     secret,
     user_id
   } = data;
+
+  const add = (dose) => {
+    onMemberSelect({
+      dose,
+      id: id
+    });
+    toggleSelectDoseModal(false);
+  };
 
   const isSelected = useMemo(() => {
     const index = selectedMembers.findIndex((m) => m.id === data.id);
@@ -32,6 +42,14 @@ function MemberDetailsCard(props) {
       return "Voter Card";
     }
   }, [id_proof_type]);
+
+  const onClick = () => {
+    if (isSelected) {
+      add(1);
+    } else {
+      toggleSelectDoseModal(true);
+    }
+  };
 
   return (
     <div className={clsx("ui segment", isSelected ? "green" : "yellow")}>
@@ -59,12 +77,21 @@ function MemberDetailsCard(props) {
           <div className="sixteen wide column text-center book-button">
             <div
               className={clsx("ui positive button", isSelected ? "" : "basic")}
-              onClick={() => onMemberSelect(data)}>
+              onClick={onClick}>
               {isSelected ? "Uncheck" : "Book Appointment"}
             </div>
           </div>
         </div>
       </div>
+      {openSelectDoseModal ? (
+        <SelectDoseModal
+          openModal={openSelectDoseModal}
+          toggleModal={toggleSelectDoseModal}
+          onSelectDose={add}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

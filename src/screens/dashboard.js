@@ -5,16 +5,17 @@ import AppContainer from "../components/app-container";
 import ConfirmModal from "../components/confirm-modal";
 import MemberDetailsCard from "../components/member-details-card";
 import { AuthContext } from "../contexts/auth-context";
-import { createMember, findAllMember } from "../store/actions/member.action";
+import { createMember, findAllMember, memberBookAppointment } from "../store/actions/member.action";
 import { getListData } from "../store/selectors/data.selector";
 
 function Dashboard(props) {
-  const { members, fetchAllMember, addMember } = props;
+  const { members, fetchAllMember, addMember, bookAppointment } = props;
   const { user } = useContext(AuthContext);
   const [isMemberLoading, toggleMemberLoading] = useState(false);
   const [openAddMemberModal, toggleAddMemberModal] = useState(false);
   const [selectedMembers, updateSelectedMember] = useState([]);
   const [openConfirmModal, toggleConfirmModal] = useState(false);
+  const [isBooking, toggleBooking] = useState(false);
 
   const phoneNumber = useMemo(() => {
     if (!user.isLoading && user.data && user.data.phone) {
@@ -48,7 +49,22 @@ function Dashboard(props) {
     });
   };
 
-  const onConfirmClick = () => {};
+  const onConfirmClick = () => {
+    if (selectedMembers && selectedMembers.length) {
+      const payload = selectedMembers.map((member) => ({
+        dose: member.dose,
+        user_member_id: member.id
+      }));
+      toggleBooking(true);
+      bookAppointment(payload, {
+        onSuccess: () => {
+          toggleBooking(false);
+          toggleConfirmModal(false);
+        },
+        onFailed: () => toggleBooking(false)
+      });
+    }
+  };
 
   return (
     <AppContainer>
@@ -122,6 +138,7 @@ function Dashboard(props) {
           openModal={openConfirmModal}
           toggleModal={toggleConfirmModal}
           onConfirmClick={onConfirmClick}
+          isBooking={isBooking}
         />
       ) : (
         <></>
@@ -139,7 +156,8 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAllMember: (actions = {}) => dispatch(findAllMember({ actions })),
-  addMember: (payload, actions = {}) => dispatch(createMember({ payload, actions }))
+  addMember: (payload, actions = {}) => dispatch(createMember({ payload, actions })),
+  bookAppointment: (payload, actions = {}) => dispatch(memberBookAppointment({ payload, actions }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

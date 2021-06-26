@@ -1,8 +1,9 @@
+import clsx from "clsx";
 import React from "react";
 import AlertBox from "./alert-box";
 
 function ConfirmModal(props) {
-  const { openModal, toggleModal, onConfirmClick } = props;
+  const { openModal, toggleModal, onConfirmClick, isBooking } = props;
 
   const closeModal = () => {
     toggleModal(false);
@@ -27,10 +28,14 @@ function ConfirmModal(props) {
             when slot become available.
           </p>
           <p className="text-center">
-            <div className="ui blue basic button" onClick={closeModal}>
+            <div
+              className={clsx("ui blue basic button", { disabled: isBooking })}
+              onClick={closeModal}>
               Cancel
             </div>
-            <div className="ui blue button" onClick={onConfirmClick}>
+            <div
+              className={clsx("ui blue button", { loading: isBooking }, { disabled: isBooking })}
+              onClick={onConfirmClick}>
               Confirm
             </div>
           </p>

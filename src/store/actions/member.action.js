@@ -29,3 +29,11 @@ export function findAllMember({ actions }) {
     actions
   };
 }
+
+export function memberBookAppointment({ payload, actions }) {
+  return {
+    type: types.MEMBER_BOOK_APPOINTMENT_REQUEST_INITIATED,
+    actions,
+    payload
+  };
+}
