@@ -3,7 +3,7 @@ import React from "react";
 import AlertBox from "./alert-box";
 
 function SelectDoseModal(props) {
-  const { openModal, toggleModal, onSelectDose } = props;
+  const { openModal, toggleModal, onSelectDose, firstDoseStatus, secondDoseStatus } = props;
 
   return (
     <AlertBox
@@ -18,10 +18,14 @@ function SelectDoseModal(props) {
         <div className="fourteen wide column padding-no">
           <h2>Select Dose no.</h2>
           <div className="text-center">
-            <div className={clsx("ui green basic button")} onClick={() => onSelectDose(1)}>
+            <div
+              className={clsx("ui green basic button", { disabled: firstDoseStatus })}
+              onClick={() => onSelectDose(1)}>
               Dose 1
             </div>
-            <div className={clsx("ui blue basic button")} onClick={() => onSelectDose(2)}>
+            <div
+              className={clsx("ui blue basic button", { disabled: secondDoseStatus })}
+              onClick={() => onSelectDose(2)}>
               Dose 2
             </div>
           </div>

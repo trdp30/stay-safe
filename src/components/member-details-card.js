@@ -63,11 +63,7 @@ function MemberDetailsCard(props) {
     if (isSelected) {
       add(1);
     } else {
-      if (firstDoseStatus) {
-        add(2);
-      } else {
-        toggleSelectDoseModal(true);
-      }
+      toggleSelectDoseModal(true);
     }
   };
 
@@ -81,25 +77,25 @@ function MemberDetailsCard(props) {
         </div>
         <div className="row text-left padding-no">
           <div className="five wide column padding-vertical-vs">
-            <span className="text-size-small margin-right-ten">Year of Birth:</span>
+            <span className="text-size-small margin-right-ten">YEAR OF BIRTH:</span>
             <b>{moment(dob).format("YYYY")}</b>
           </div>
           <div className="five wide column padding-vertical-vs">
-            <span className="text-size-small margin-right-ten">ID Card:</span>
+            <span className="text-size-small margin-right-ten">ID CARD:</span>
             <b>{idCard}</b>
           </div>
           <div className="six wide column padding-vertical-vs">
-            <span className="text-size-small margin-right-ten">ID Number:</span>
+            <span className="text-size-small margin-right-ten">ID NUMBER:</span>
             <b>{id_number}</b>
           </div>
         </div>
         <div className="row text-left padding-no">
           <div className="eight wide column padding-vertical-vs">
-            <span className="text-size-small margin-right-ten">1st Dose:</span>
+            <span className="margin-right-ten">1st DOSE:</span>
             <b>{firstDoseStatus ? firstDoseStatus : "Not Booked"}</b>
           </div>
           <div className="eight wide column padding-vertical-vs">
-            <span className="text-size-small margin-right-ten">2nd Dose:</span>
+            <span className="margin-right-ten">2nd DOSE:</span>
             <b>{secondDoseStatus ? secondDoseStatus : "Not Booked"}</b>
           </div>
         </div>
@@ -122,6 +118,8 @@ function MemberDetailsCard(props) {
           openModal={openSelectDoseModal}
           toggleModal={toggleSelectDoseModal}
           onSelectDose={add}
+          firstDoseStatus={firstDoseStatus}
+          secondDoseStatus={secondDoseStatus}
         />
       ) : (
         <></>

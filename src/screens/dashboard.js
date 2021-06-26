@@ -92,7 +92,7 @@ function Dashboard(props) {
                 </h4>
               </div>
               {members.length && shouldAddMemberButton ? (
-                <div className="six wide column text-right">
+                <div className="six wide column text-right padding-vertical-vs">
                   <div className="ui positive button" onClick={() => toggleAddMemberModal(true)}>
                     Add Member
                   </div>
