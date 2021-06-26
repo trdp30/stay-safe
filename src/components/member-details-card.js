@@ -6,19 +6,15 @@ import SelectDoseModal from "./select-dose-modal";
 function MemberDetailsCard(props) {
   const { data, onMemberSelect, selectedMembers } = props;
   const [openSelectDoseModal, toggleSelectDoseModal] = useState(false);
-  const {
-    dob,
-    dose_1,
-    dose_2,
-    id,
-    id_number,
-    id_proof_type,
-    is_deleted,
-    name,
-    ref_number,
-    secret,
-    user_id
-  } = data;
+  const { dob, dose_1_booked, dose_2_booked, id, id_number, id_proof_type, name } = data;
+
+  const isBooked = useMemo(() => {
+    if (dose_1_booked || dose_2_booked) {
+      return dose_1_booked ? "Dose 1" : "Dose 2";
+    } else {
+      return false;
+    }
+  }, [dose_1_booked, dose_2_booked]);
 
   const add = (dose) => {
     onMemberSelect({
@@ -75,11 +71,17 @@ function MemberDetailsCard(props) {
         </div>
         <div className="row text-left padding-vertical-vs">
           <div className="sixteen wide column text-center book-button">
-            <div
-              className={clsx("ui positive button", isSelected ? "" : "basic")}
-              onClick={onClick}>
-              {isSelected ? "Uncheck" : "Book Appointment"}
-            </div>
+            {isBooked ? (
+              <div className={clsx("ui basic positive button", isSelected ? "" : "basic")}>
+                Booked Appointment for {isBooked}
+              </div>
+            ) : (
+              <div
+                className={clsx("ui positive button", isSelected ? "" : "basic")}
+                onClick={onClick}>
+                {isSelected ? "Uncheck" : "Book Appointment"}
+              </div>
+            )}
           </div>
         </div>
       </div>

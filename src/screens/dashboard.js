@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useLayoutEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import AddMemberModal from "../components/add-member-modal";
 import AppContainer from "../components/app-container";
 import ConfirmModal from "../components/confirm-modal";
+import SpinLoading from "../components/spin-loader";
 import MemberDetailsCard from "../components/member-details-card";
 import { AuthContext } from "../contexts/auth-context";
 import { createMember, findAllMember, memberBookAppointment } from "../store/actions/member.action";
@@ -11,7 +12,7 @@ import { getListData } from "../store/selectors/data.selector";
 function Dashboard(props) {
   const { members, fetchAllMember, addMember, bookAppointment } = props;
   const { user } = useContext(AuthContext);
-  const [isMemberLoading, toggleMemberLoading] = useState(false);
+  const [isMemberLoading, toggleMemberLoading] = useState(true);
   const [openAddMemberModal, toggleAddMemberModal] = useState(false);
   const [selectedMembers, updateSelectedMember] = useState([]);
   const [openConfirmModal, toggleConfirmModal] = useState(false);
@@ -28,7 +29,7 @@ function Dashboard(props) {
     return !isMemberLoading && members && members.length < 4;
   }, [members, isMemberLoading]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (user && user.data && user.data.id) {
       toggleMemberLoading(true);
       fetchAllMember({
@@ -66,25 +67,49 @@ function Dashboard(props) {
     }
   };
 
+  if (isMemberLoading) {
+    return (
+      <AppContainer>
+        <div className="twelve wide column text-center">
+          <SpinLoading />
+        </div>
+      </AppContainer>
+    );
+  }
+
   return (
     <AppContainer>
       <div className="centered fourteen wide column">
         <div className="ui segment dashboard-container">
           <div className="ui centered stackable grid margin-no height-full">
             <div className="row">
-              <div className="twelve wide column">
+              <div className="six wide column">
                 <h2>Account Details</h2>
                 <h4>
                   Registered Mobile Number:
                   <div>XXXXX-X{phoneNumber ? phoneNumber.slice(6, 10) : "----"}</div>
                 </h4>
               </div>
+              {shouldAddMemberButton ? (
+                <div className="six wide column text-right">
+                  <div className="ui positive button" onClick={() => toggleAddMemberModal(true)}>
+                    Add Member
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="row">
               <div className="twelve wide column">
                 <div className="ui segment text-center">
                   {!isMemberLoading && members && members.length ? (
                     <>
+                      {shouldAddMemberButton ? (
+                        <p className="margin-top-ten">You can add member upto 4</p>
+                      ) : (
+                        <></>
+                      )}
                       {members.map((member) => (
                         <MemberDetailsCard
                           key={member.id}
@@ -98,16 +123,6 @@ function Dashboard(props) {
                     <h4>No Member Registered</h4>
                   )}
                 </div>
-                {shouldAddMemberButton ? (
-                  <div className="ui segment text-center border-none box-shadow-none">
-                    <div className="ui positive button" onClick={() => toggleAddMemberModal(true)}>
-                      Add Member
-                    </div>
-                    <p className="margin-top-ten">You can add member upto 4</p>
-                  </div>
-                ) : (
-                  <></>
-                )}
                 {selectedMembers.length ? (
                   <div className="ui segment text-center border-none box-shadow-none">
                     <div

@@ -1,5 +1,6 @@
 import { includes } from "lodash";
 import produce from "immer";
+import { sessionActionTypes } from "../action-types";
 
 function isValid(action, modelName) {
   const { payload } = action;
@@ -55,7 +56,7 @@ export const getById = (modelName) => {
     if (
       action.type &&
       action.type.toLowerCase &&
-      action.type.toLowerCase().includes(`${modelName}_reset_data`)
+      action.type === sessionActionTypes.UNAUTHENTICATED_SUCCESS
     ) {
       return {};
     } else if (
