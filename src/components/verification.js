@@ -54,6 +54,7 @@ const VerificationView = (props) => {
                   fields={fields}
                   postRequest={handleLogin}
                   initialValues={state}
+                  submitButtonFieldClassNames={"field text-center"}
                   submitButtonLabel={"Verify"}
                   submitButtonClassNames={"ui primary button text-weight-normal button-login"}
                 />

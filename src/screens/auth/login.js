@@ -144,6 +144,7 @@ const Login = (props) => {
                   fields={fields}
                   postRequest={getVerificationCode}
                   initialValues={state}
+                  submitButtonFieldClassNames={"field text-center"}
                   submitButtonLabel={"Get OTP"}
                   submitButtonClassNames={"ui primary button text-weight-normal button-login"}
                 />

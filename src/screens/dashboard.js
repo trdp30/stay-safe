@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import AddMemberModal from "../components/add-member-modal";
 import AppContainer from "../components/app-container";
+import ConfirmModal from "../components/confirm-modal";
 import MemberDetailsCard from "../components/member-details-card";
 import { AuthContext } from "../contexts/auth-context";
 import { createMember, findAllMember } from "../store/actions/member.action";
@@ -12,6 +13,8 @@ function Dashboard(props) {
   const { user } = useContext(AuthContext);
   const [isMemberLoading, toggleMemberLoading] = useState(false);
   const [openAddMemberModal, toggleAddMemberModal] = useState(false);
+  const [selectedMembers, updateSelectedMember] = useState([]);
+  const [openConfirmModal, toggleConfirmModal] = useState(false);
 
   const phoneNumber = useMemo(() => {
     if (!user.isLoading && user.data && user.data.phone) {
@@ -21,8 +24,8 @@ function Dashboard(props) {
   }, [user]);
 
   const shouldAddMemberButton = useMemo(() => {
-    return !isMemberLoading && members && members.length && members.length <= 4;
-  });
+    return !isMemberLoading && members && members.length < 4;
+  }, [members, isMemberLoading]);
 
   useEffect(() => {
     if (user && user.data && user.data.id) {
@@ -34,6 +37,19 @@ function Dashboard(props) {
     }
   }, [user, fetchAllMember]);
 
+  const onMemberSelect = (value) => {
+    updateSelectedMember((prev) => {
+      const index = prev.findIndex((m) => m.id === value.id);
+      if (index === -1) {
+        return prev.concat(value);
+      } else {
+        return prev.filter((m) => m.id !== value.id);
+      }
+    });
+  };
+
+  const onConfirmClick = () => {};
+
   return (
     <AppContainer>
       <div className="centered fourteen wide column">
@@ -44,7 +60,7 @@ function Dashboard(props) {
                 <h2>Account Details</h2>
                 <h4>
                   Registered Mobile Number:
-                  <div>XXXXX-X{phoneNumber && phoneNumber.slice(6, 10)}</div>
+                  <div>XXXXX-X{phoneNumber ? phoneNumber.slice(6, 10) : "----"}</div>
                 </h4>
               </div>
             </div>
@@ -52,34 +68,63 @@ function Dashboard(props) {
               <div className="twelve wide column">
                 <div className="ui segment text-center">
                   {!isMemberLoading && members && members.length ? (
-                    <div>
+                    <>
                       {members.map((member) => (
-                        <MemberDetailsCard key={member.id} {...member} />
+                        <MemberDetailsCard
+                          key={member.id}
+                          data={member}
+                          selectedMembers={selectedMembers}
+                          onMemberSelect={onMemberSelect}
+                        />
                       ))}
-                    </div>
+                    </>
                   ) : (
                     <h4>No Member Registered</h4>
                   )}
                 </div>
-                {shouldAddMemberButton && (
-                  <div className="ui segment text-center">
+                {shouldAddMemberButton ? (
+                  <div className="ui segment text-center border-none box-shadow-none">
                     <div className="ui positive button" onClick={() => toggleAddMemberModal(true)}>
                       Add Member
                     </div>
-                    <p className="margin-top-ten">You can add member upto 4 members</p>
+                    <p className="margin-top-ten">You can add member upto 4</p>
                   </div>
+                ) : (
+                  <></>
+                )}
+                {selectedMembers.length ? (
+                  <div className="ui segment text-center border-none box-shadow-none">
+                    <div
+                      className="ui blue button padding-vertical-bg"
+                      onClick={() => toggleConfirmModal(true)}>
+                      Schedule Appointment
+                    </div>
+                  </div>
+                ) : (
+                  <></>
                 )}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {openAddMemberModal && (
+      {openAddMemberModal ? (
         <AddMemberModal
           openModal={openAddMemberModal}
           toggleModal={toggleAddMemberModal}
           addMember={addMember}
         />
+      ) : (
+        <></>
+      )}
+      {openConfirmModal ? (
+        <ConfirmModal
+          openModal={openConfirmModal}
+          toggleModal={toggleConfirmModal}
+          onConfirmClick={onConfirmClick}
+        />
+      ) : (
+        <></>
       )}
     </AppContainer>
   );

@@ -28,9 +28,15 @@
     &-big {
       font-size: 2.5em;
     }
+    &-ten {
+      font-size: 10px;
+    }
   }
   &-color {
     &-red {
+      color: red;
+    }
+    &-negative {
       color: red;
     }
     &-primary {
@@ -106,6 +112,14 @@ body {
       padding-top: 30px !important;
     }
   }
+  &-bottom {
+    &-no {
+      padding-bottom: 0 !important;
+    }
+    &-big {
+      padding-top: 30px !important;
+    }
+  }
   &-vertical {
     &-vs {
       padding-top: 5px !important;
@@ -114,6 +128,10 @@ body {
     &-large {
       padding-top: 40px !important;
       padding-bottom: 40px !important;
+    }
+    &-bg {
+      padding-top: 20px !important;
+      padding-bottom: 20px !important;
     }
   }
 }
@@ -228,4 +246,14 @@ body {
 .ui.stackable.grid > .row > .column .padding-vertical-vs {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
+  .sixteen.wide.column {
+    &.book-button {
+      padding-top: 10px !important;
+      padding-bottom: 0 !important;
+    }
+  }
+}
+
+.box-shadow-none {
+  box-shadow: none !important;
 }
