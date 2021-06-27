@@ -4,7 +4,8 @@ const initialState = {
   isAuthenticated: false,
   expiresIn: null,
   refreshToken: null,
-  token: null
+  token: null,
+  role: null
 };
 
 const session = (state = initialState, action) => {
@@ -15,8 +16,9 @@ const session = (state = initialState, action) => {
         isLoading: false,
         isAuthenticated: true,
         expiresIn: action.payload.expiresIn,
-        refreshToken: action.payload.refresh_token,
-        token: action.payload.token
+        refreshToken: action.payload.refreshToken,
+        token: action.payload.token,
+        role: action.payload.role
       };
     case "UNAUTHENTICATED_SUCCESS": {
       return {
@@ -25,7 +27,8 @@ const session = (state = initialState, action) => {
         isAuthenticated: false,
         expiresIn: null,
         refreshToken: null,
-        token: null
+        token: null,
+        role: null
       };
     }
     case sessionActionTypes.UNAUTHENTICATED_REQUEST_INITIATED: {

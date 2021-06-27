@@ -28,8 +28,6 @@ const VerificationView = (props) => {
   } = props;
   const state = useMemo(() => ({ otp: "" }), []);
 
-  console.log(phone);
-
   return (
     <AppContainer>
       <div className="centered seven wide column">

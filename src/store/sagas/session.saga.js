@@ -1,18 +1,30 @@
 import { all, takeLatest, fork, call, put } from "redux-saga/effects";
 import { sessionActionTypes as types } from "../action-types";
-import { createRecord } from "../server";
+import { storeCurrentUser } from "../actions/user.action";
+import { createRecord, getRecord } from "../server";
 
 function* workerAuthenticate({ payload, actions }) {
   try {
     const response = yield call(createRecord, "login", payload);
     if (response.data.token) {
-      yield put({ type: types.AUTHENTICATION_SUCCESS, payload: response.data });
       let tokenData = {
         expiresIn: response.data.expiresIn,
         refreshToken: response.data.refresh_token,
         token: response.data.token
       };
+
+      const userResponse = yield call(getRecord, "me", {
+        headers: {
+          authorization: `Bearer ${tokenData.token}`
+        }
+      });
+
+      yield put(storeCurrentUser(userResponse.data));
+
+      tokenData.role = userResponse.data.role;
+
       localStorage.setItem("stay-safe-session", JSON.stringify(tokenData));
+      yield put({ type: types.AUTHENTICATION_SUCCESS, payload: tokenData });
       if (actions.onSuccess) {
         yield call(actions.onSuccess, response.data);
       }

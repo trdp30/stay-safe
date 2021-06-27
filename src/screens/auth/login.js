@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useLayoutEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { toastError } from "../../components/toast-helpers";
 import { authenticateInitiate, triggerOtp } from "../../store/actions/session.action";
@@ -100,9 +100,9 @@ const Login = (props) => {
     triggerVerificationCode(payload, { onSuccess, onFailed });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (session.isAuthenticated) {
-      history.push("/");
+      history.push("/dashboard");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session.isAuthenticated]);

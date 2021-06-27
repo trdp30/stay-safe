@@ -14,8 +14,8 @@ export const ApplicationContext = memo(({ children, ...props }) => {
   const configurations = useMemo(() => {
     return {
       user: userModel,
-      isAuthenticated: session.isAuthenticated
-      // isAdmin: session && session.authorization && session.authorization.role === "admin"
+      isAuthenticated: session.isAuthenticated,
+      isAdmin: session && session.role === 1
     };
   }, [session, userModel]);
 

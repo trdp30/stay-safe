@@ -21,7 +21,8 @@ function configureStore(initialState) {
         isAuthenticated: true,
         expiresIn: sessionDetails.expiresIn,
         refreshToken: sessionDetails.refreshToken,
-        token: sessionDetails.token
+        token: sessionDetails.token,
+        role: sessionDetails.role
       }
     };
   }

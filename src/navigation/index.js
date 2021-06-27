@@ -1,4 +1,4 @@
-import Dashboard from "../screens/dashboard";
+import ConsumerDashboard from "../screens/consumer/dashboard";
 import LoginScreen from "../screens/auth/login";
 import { connect } from "react-redux";
 import React, { Suspense } from "react";
@@ -6,8 +6,9 @@ import Navbar from "../components/nav-bar";
 import { Switch, Route, Redirect } from "react-router-dom";
 import ErrorBoundary from "./error-boundary";
 import LoadingContainer from "./loading-container";
-import Register from "../screens/registration";
 import ApplicationContext from "../contexts/auth-context";
+import AdminDashboard from "../screens/admin/admin-dashboard";
+import Dashboard from "../screens/dashboard";
 
 export const preload = (route) => {
   const loadableComponent = route.component;
@@ -21,18 +22,29 @@ export const publicRoutes = [
     key: "login",
     path: "/login",
     component: LoginScreen
+  },
+  {
+    key: "root",
+    path: "/",
+    component: Dashboard
   }
 ];
 
 export const privateRoutes = [
   {
-    path: "/",
-    component: Dashboard
+    key: "consumer-dashboard",
+    path: "/home",
+    component: ConsumerDashboard
   },
   {
-    key: "registration",
-    path: "/register",
-    component: Register
+    key: "admin-dashboard",
+    path: "/admin-dashboard",
+    component: AdminDashboard
+  },
+  {
+    key: "dashboard",
+    path: "/dashboard",
+    component: Dashboard
   }
 ];
 
@@ -51,11 +63,9 @@ const PrivateRoute = ({ component: Component, isAuthenticated, currentUserRole, 
         ) : (
           <>
             <Navbar />
-            <ApplicationContext>
-              <div className="ui container">
-                <Component {...props} />
-              </div>
-            </ApplicationContext>
+            <div className="ui container">
+              <Component {...props} />
+            </div>
           </>
         )
       }
@@ -84,10 +94,12 @@ const Navigation = (props) => {
   return (
     <ErrorBoundary>
       <Suspense fallback={<LoadingContainer />}>
-        <Switch>
-          {PublicRoutes}
-          {allOtherRoutes}
-        </Switch>
+        <ApplicationContext>
+          <Switch>
+            {PublicRoutes}
+            {allOtherRoutes}
+          </Switch>
+        </ApplicationContext>
       </Suspense>
     </ErrorBoundary>
   );
