@@ -12,6 +12,7 @@ import {
   memberBookAppointment
 } from "../../store/actions/member.action";
 import { getListData } from "../../store/selectors/data.selector";
+import clsx from "clsx";
 
 function ConsumerDashboard(props) {
   const { members, fetchAllMember, addMember, bookAppointment, history } = props;
@@ -95,7 +96,7 @@ function ConsumerDashboard(props) {
         <div className="ui segment dashboard-container">
           <div className="ui centered stackable grid margin-no height-full">
             <div className="row">
-              <div className="six wide column">
+              <div className={clsx(members.length ? "six" : "twelve", "wide column")}>
                 <h2>Account Details</h2>
                 <h4>
                   Registered Mobile Number:

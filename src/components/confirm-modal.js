@@ -23,10 +23,8 @@ function ConfirmModal(props) {
       <div className="ui centered grid margin-no">
         <div className="fourteen wide column padding-no">
           <h2>Heads up!</h2>
-          <p>
-            Once you place the Appointment you cannot update it. Vaccination date will be notify you
-            when slot become available.
-          </p>
+          <p>Once you place the Appointment you cannot update it.</p>
+          <p>Vaccination date will be notify you when slot become available.</p>
           <p className="text-center">
             <div
               className={clsx("ui blue basic button", { disabled: isBooking })}
